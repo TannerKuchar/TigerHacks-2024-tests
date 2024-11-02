@@ -5,7 +5,15 @@ app = Flask(__name__)
 # ROUTES
 @app.route('/')
 def home():
-    return render_template('index.html')  # This will look for 'index.html' in the 'templates' folder
+    return render_template('index.html')
+
+@app.route('/find')
+def find():
+    return render_template('find.html')
+
+@app.route('/donate')
+def donate():
+    return render_template('donate.html')
 
 # SERVER SCRIPTS
 
@@ -36,12 +44,12 @@ donation_df = pd.read_csv('generated_donations.csv')
 unique_locations = donation_df['Location'].unique()
 
 # Fit Prophet Models
-prophet_donations = Prophet()
+prophet_donations = Prophet(changepoint_prior_scale=0.8)
 prophet_donations_df = pd.read_csv('generated_donations.csv')
 prophet_donations_df.rename(columns={'Date': 'ds', '# Meals': 'y'}, inplace=True)
 prophet_donations.fit(prophet_donations_df)
 
-prophet_distributions = Prophet()
+prophet_distributions = Prophet(changepoint_prior_scale=0.8)
 prophet_distributions_df = pd.read_csv('generated_distributions.csv')
 prophet_distributions_df.rename(columns={'Date': 'ds', '# Meals': 'y'}, inplace=True)
 prophet_distributions.fit(prophet_distributions_df)
@@ -99,13 +107,25 @@ def get_pantry_demand(location, dt):
 
 # Finds the pantries with the highest number of meals needed. If a zip code is provided, then it uses the 10 nearest pantries and sorts them by demand.
 def get_high_demand_pantries(zip_code=None, dt=None):
+
     # Dictionary to store meals needed for each location
-    meals_needed_dict = {}
+    meals_needed_dict = dict()
+    if zip_code is not None:
+        # Get nearby locations based on zip_code
+        nearby_locations = get_nearby_pantries(zip_code)
+
+        meals_needed_dict = {
+            location['address']: get_pantry_demand(location['address'], dt)
+            for location in nearby_locations
+        }
+    else:
+        meals_needed_dict = {location: get_pantry_demand(location, dt) for location in unique_locations}
+
 
     # Populate the dictionary with meals needed for each location
-    for location in unique_locations:
-        meals_needed = get_pantry_demand(location, dt)  # Get the demand for each location
-        meals_needed_dict[location] = meals_needed      # Store the demand with location as key
+    # for location in unique_locations:
+    #     meals_needed = get_pantry_demand(location, dt)  # Get the demand for each location
+    #     meals_needed_dict[location] = meals_needed      # Store the demand with location as key
 
     # Sort locations by meals needed in descending order and select the top 10
     top_10_locations = sorted(meals_needed_dict.items(), key=lambda x: x[1], reverse=True)[:10]
@@ -114,6 +134,7 @@ def get_high_demand_pantries(zip_code=None, dt=None):
     top_10_list = [{'location': location, 'demand': demand} for location, demand in top_10_locations]
 
     return top_10_list
+        
             
 
 

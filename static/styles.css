@@ -60,6 +60,38 @@ span {
     padding-left: 10px; padding-right: 10px;
 }
 
+/* INPUTS */
+input {
+    background-color: transparent;
+    border-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 20px;
+    padding:10px;
+    font-family: Helvetica-Neue;
+}
+
+input:focus {
+    outline: none;
+}
+
+button {
+    background-color: transparent;
+    border-color: var(--light-green);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 20px;
+    padding-left:40px; padding-right: 40px;
+    font-family: Helvetica-Neue;
+}
+
+button:hover {
+    background-color: var(--light-green);
+    transition-duration: .4s;
+    color: var(--dark-green);
+    cursor:pointer;
+}
+
 /* STATS */
 #stats div {
     background-color: var(--light-green);
