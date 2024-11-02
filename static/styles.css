@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalnia:wght@100..700&display=swap');
+
+/* FONTS */
+@font-face {
+    font-family: Helvetica-Neue;
+    src: url("./fonts/HelveticaNeueLight.otf") format("opentype");
+}
+
+* {
+    margin: 0;
+    color: white;
+    --dark-green: #063E32;
+    --light-green: #9FCD9F;
+    font-family: Kalnia Arial;
+
+}
+
+body {
+    background-color: #181818;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    overflow-x: hidden;
+}
+
+/* TEXT */
+
+h1 {
+    font-family: Kalnia;
+    font-size: 46px;
+    font-weight: 400;
+}
+
+h2 {
+    font-weight: 400;
+}
+
+p {
+    font-family: Helvetica-Neue;
+}
+
+a {
+    font-family: Helvetica-Neue;
+    color: #5392FF;
+    text-decoration: none;
+}
+
+a p {
+    color: #5392FF;
+}
+
+a .arrow {
+    margin-left: 5px;
+    transition-duration: .4s;
+}
+
+span {
+    background-color: var(--light-green);
+    border-radius: 24px;
+    color: var(--dark-green);
+    padding-left: 10px; padding-right: 10px;
+}
+
+/* STATS */
+#stats div {
+    background-color: var(--light-green);
+    border-radius: 24px;
+    max-width: 200px;
+    text-align: center;
+    padding-left: 10px; padding-right: 10px;
+    padding-top: 30px;
+    height: 160px;
+}
+#stats h1 {
+    color: var(--dark-green);
+    font-size: 46px;
+}
+#stats p {
+    margin-top: 20px;
+    color: var(--dark-green);
+}
+#stats .source {
+    margin-top: 20px;
+}
+
+/* ANIMATIONS */
+
+a:hover .arrow {
+    margin-left: 8px;
+    transition-duration: .4s;
+}
