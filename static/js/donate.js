@@ -38,7 +38,7 @@ async function loadPage() {
         <div style = "display: grid; margin-top: 10px;">
             <p class = "address" style = "width: max-content;">${pantries[i]['location']}</p>
             <div style = "grid-column-start: 2; display: grid; justify-content: right;">
-            <a href = "" style = "display: flex; width: max-content; grid-column-start: 2; justify-content: right;">
+            <a href = "https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(pantries[i]['location'])}" style = "display: flex; width: max-content; grid-column-start: 2; justify-content: right;">
                 <p>Donate</p>
                 <img class = "arrow" src = "../static/images/arrow.svg">
             </a>
