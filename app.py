@@ -21,7 +21,6 @@ def donate():
 import pandas as pd
 from prophet import Prophet
 from geopy import distance
-import numpy as np
 import math
 from datetime import date
 from geopy.geocoders import Nominatim
@@ -86,7 +85,8 @@ def predict_donations(location, dt):
     difference = (date.fromisoformat(dt) - date.fromisoformat('2024-11-01')).days
     future = prophet_donations.make_future_dataframe(periods=difference)
     subset = prophet_donations_df[prophet_donations_df['Location'] == location]
-    forecast = prophet_donations.predict(subset)
+    location_fit = Prophet().fit(subset)
+    forecast = location_fit.predict(subset)
     return math.ceil(forecast.iloc[-1, 1])
 
 # Predict number of distributions given a future date
@@ -94,7 +94,9 @@ def predict_distributions(location, dt):
     difference = (date.fromisoformat(dt) - date.fromisoformat('2024-11-01')).days
     future = prophet_distributions.make_future_dataframe(periods=difference)
     subset = prophet_distributions_df[prophet_distributions_df['Location'] == location]
-    forecast = prophet_distributions.predict(subset)
+    location_fit = Prophet().fit(subset)
+    forecast = location_fit.predict(subset)
+    print("distributions predicted for " + location + " = " + str(math.ceil(forecast.iloc[-1, 1])))
     return math.ceil(forecast.iloc[-1, 1])
 
 # Get the demand for meals at a given location
@@ -136,9 +138,6 @@ def get_high_demand_pantries(zip_code=None, dt=None):
     return top_10_list
         
             
-
-
-
 @app.route('/zhn-endpoint', methods=['POST', 'GET', 'OPTIONS'])
 def zhn_endpoint():
     # Set CORS headers for the preflight request
